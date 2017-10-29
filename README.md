@@ -1,10 +1,8 @@
 # booleanRetrieval
                                               
 ===========================================================================================================
-1) Unzip given file
-2) Make sure you have python installed on your pc. I have used 2.7.3 version
-3) Open terminal
-4) Excute below commands
+Built on python 2.7.3
+1) Excute following commands
     a) python index.py
     b) It will ask you to enter directory path containing input text files. Paste the directory path and press enter
         Example - "doc"
