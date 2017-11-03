@@ -7,6 +7,7 @@ import time
 
 # This is the map where dictionary terms will be stored as keys and value will be posting list with position in the file
 dictionary = {}
+matrix = {}
 # This is the map of docId to input file name
 docIdMap = {}
 
@@ -20,8 +21,11 @@ class index:
 
         docId = 1
         fileList = [f for f in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, f))]
+        fileobj = open('frequency.txt', 'w')
+        fileobj1 = open('matrix.txt', 'w')
         for eachFile in fileList:
             position = 1
+            count = 0
             # docName = "Doc_Id_" + str(docId)
             # docName =  str(docId)
             docIdMap[docId] = eachFile
@@ -32,7 +36,6 @@ class index:
 
                 while '' in wordList:
                     wordList.remove('')
-
                 for word in wordList:
                     if (word.lower() in dictionary):
                         postingList = dictionary[word.lower()]
@@ -46,6 +49,37 @@ class index:
                         dictionary[word.lower()] = {docId: [position]}
                         position = position + 1
             docId = docId + 1
+        #lengths = {key:len(value) for key,value in dictionary.iteritems()}
+        length_dict = {key: len(value) for key, value in dictionary.items()}
+        for w in length_dict:
+            fileobj.write(w +"   |   "+str(length_dict[w]))
+            fileobj.write("\n")
+        fileobj.close()
+
+
+        firstLine = "          **|**   "
+        for d in docIdMap:
+            firstLine = firstLine + " | " +str(d)
+        fileobj1.write(firstLine+"   **|** ")
+        fileobj1.write('\n')
+        fileobj1.write('\n')
+        for t in dictionary:
+            poList = dictionary[t]
+            kList = []
+            for keys in poList:
+                kList.append(keys)
+            line = "       "
+
+            for d in docIdMap:
+                if d in kList:
+                    line = line + " | " + "1"
+                else:
+                    line = line + " | " + "0"
+
+            fileobj1.write(t+"  **|**"+line)
+            fileobj1.write('\n')
+
+        fileobj1.close()
 
     def and_query(self, query_terms):
         if len(query_terms) == 1:
